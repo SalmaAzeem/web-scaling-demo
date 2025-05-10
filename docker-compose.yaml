@@ -3,9 +3,9 @@ services:
     build: ./app
     container_name: app1
     ports:
-      - 3001:3000
+      - 8081:8080
     environment:
-      - SERVER_PORT=3000
+      - SERVER_PORT=8080
       - SERVER_HOST=0.0.0.0
       - SERVER_NUMBER=1
       - REDIS_HOST=redis
@@ -18,11 +18,25 @@ services:
     build: ./app
     container_name: app2
     ports:
-      - 3002:3000
+      - 8082:8080
     environment:
-      - SERVER_PORT=3000
+      - SERVER_PORT=8080
       - SERVER_HOST=0.0.0.0
       - SERVER_NUMBER=2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
+    depends_on:
+      - redis
+  app3:
+    build: ./app
+    container_name: app2
+    ports:
+      - 8083:8080
+    environment:
+      - SERVER_PORT=8080
+      - SERVER_HOST=0.0.0.0
+      - SERVER_NUMBER=3
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
@@ -45,3 +59,4 @@ services:
     depends_on:
       - app1
       - app2
+      - app3
